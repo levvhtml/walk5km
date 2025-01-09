@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Ejercicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: column;
+            text-align: center;
+            background: linear-gradient(135deg, #121212 25%, #1e1e1e 75%);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #afafaf;
+        }
+
+        .counter {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 20px 0;
+            padding: 10px;
+            transition: transform 0.2s ease-out;
+            animation: numAnimation 0.5s ease-in-out forwards;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.1s ease;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #increment {
+            background-color: #75de75;
+            color: white;
+        }
+
+        #decrement {
+            background-color: #ec4949;
+            color: white;
+        }
+
+        #reset {
+            background-color: #afafaf;
+            color: white;
+        }
+
+        .status {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #afafaf;
+        }
+
+        @keyframes numAnimation {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Work Out</h1>
+    <div class="counter" id="counter">0</div>
+    <div class="button-container">
+        <button id="increment">+1</button>
+        <button id="decrement">-1</button>
+        <button id="reset">Reset</button>
+    </div>
+    <div class="status" id="status">Día 0/360</div>
+
+    <script>
+        let count = localStorage.getItem('count') ? parseInt(localStorage.getItem('count')) : 0; // Cargar desde LocalStorage si existe
+        const counterElement = document.getElementById('counter');
+        const statusElement = document.getElementById('status');
+
+        const updateCounter = () => {
+            counterElement.textContent = count;
+            statusElement.textContent = `Día ${count}/360`;
+            localStorage.setItem('count', count); // Guardar el contador en LocalStorage
+            counterElement.style.animation = 'none';
+            setTimeout(() => {
+                counterElement.style.animation = 'numAnimation 0.2s ease-in-out forwards';
+            }, 10);
+        };
+
+        document.getElementById('increment').addEventListener('click', () => {
+            if (count < 360) count++;
+            updateCounter();
+        });
+
+        document.getElementById('decrement').addEventListener('click', () => {
+            if (count > 0) count--;
+            updateCounter();
+        });
+
+        document.getElementById('reset').addEventListener('click', () => {
+            count = 0;
+            updateCounter();
+        });
+
+        updateCounter(); // Inicializar el contador al cargar la página
+    </script>
+
+</body>
+</html>
